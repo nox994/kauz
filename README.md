@@ -19,6 +19,13 @@ Kauz looks at your system, finds weak spots and explains in plain English what t
 > things. It is no replacement for professional security tools. Always check a command before you run it.
 > Found a bug? Please [open an issue](https://github.com/nox994/kauz/issues).
 
+This project was made with AI (obviously). I made it because I wanted to create something useful.
+
+I want to remind you that this project is based on trust. I'm new to software engineering and I'm open to criticism. I want to get better by improving.
+
+I'm also serious about my standpoint: I want to improve Linux with apps people can actually use. I'm still tied to Windows in some ways myself, and my goal is to finally break free from it.
+
+This statement isn't here to hide from criticism. It's here so you can understand my point of view.
 ---
 
 ## 📦 Installation
