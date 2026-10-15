@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Kauz
+GenericName=Security Check
+Comment=Checks your Linux PC for security problems and explains them
+Exec=kauz-gui
+Icon=kauz
+Terminal=false
+Categories=System;Security;Utility;Qt;
+Keywords=security;firewall;ports;audit;scan;
+StartupWMClass=kauz

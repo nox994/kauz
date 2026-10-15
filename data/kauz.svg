@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 130" class="owl happy" aria-label="Kauz">
+  <g fill="none" stroke="#3b2f22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 30 L34 14 L46 28 Q60 22 74 28 L86 14 L96 30 Q104 60 96 92 Q86 118 60 118 Q34 118 24 92 Q16 60 24 30Z" fill="#e9dcc6"/>
+    <circle cx="46" cy="52" r="15" fill="#ffffff"/><circle cx="74" cy="52" r="15" fill="#ffffff"/>
+    <path d="M38 52 q8 -9 16 0" /><path d="M66 52 q8 -9 16 0" />
+    <path d="M56 66 L60 76 L64 66Z" fill="#d08a2b" stroke="#d08a2b"/>
+    <path d="M44 92 q4 4 8 0 M56 98 q4 4 8 0 M68 92 q4 4 8 0" stroke-width="3"/>
+    <path d="M44 120 v6 M52 120 v6 M68 120 v6 M76 120 v6" stroke="#d08a2b"/>
+  </g>
+</svg>
