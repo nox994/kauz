@@ -1,67 +1,103 @@
 # 🦉 Kauz
 
 **The friendly security check for your Linux PC.**
+
 Kauz looks at your system, finds weak spots and explains in plain English what they mean and how to fix them.
 
 *Kauz is German for tawny owl – the mascot that keeps an eye on your system.*
 
-- Only reads – **never changes** your system
-- No dependencies for the terminal version, just Python 3.9+
-- Works on Arch/CachyOS, Debian/Ubuntu, Fedora, openSUSE, Bazzite
-- Desktop app (Qt, fits KDE), terminal output, HTML report or JSON
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)
+![Platform: Linux](https://img.shields.io/badge/platform-Linux-orange)
+
+- 👀 **Only reads** – never changes your system
+- 🐍 Terminal version needs nothing but Python 3.9+
+- 🐧 Works on Arch/CachyOS, Debian/Ubuntu, Fedora, openSUSE, Bazzite
+- 🖥️ Desktop app (Qt, fits KDE), terminal output, HTML report or JSON
 
 > ⚠️ **Kauz can make mistakes.** It's a young hobby project: it may miss real problems or flag harmless
 > things. It is no replacement for professional security tools. Always check a command before you run it.
 > Found a bug? Please [open an issue](https://github.com/nox994/kauz/issues).
 
-## Installation
+---
+
+## 📦 Installation
+
+### Arch Linux / CachyOS (recommended)
+
+```bash
+git clone https://github.com/nox994/kauz.git
+cd kauz
+makepkg -si
+```
+
+This builds and installs Kauz as a real package: you get the `kauz` and `kauz-gui` commands
+and an entry in your app menu (category *System*).
+
+For the desktop app also install PySide6:
+```bash
+sudo pacman -S pyside6
+```
+
+Uninstall: `sudo pacman -R kauz`
+
+### Other distros
 
 ```bash
 git clone https://github.com/nox994/kauz.git
 cd kauz
 ```
 
-**Desktop app** on CachyOS/Arch:
-```bash
-sudo pacman -S pyside6
-./install-desktop.sh      # adds Kauz to your app menu
-```
-Then open **Kauz** from the app menu (category *System*), or run `python3 -m kauz.gui`.
+**Desktop app:** install PySide6 first
+- Fedora: `sudo dnf install python3-pyside6`
+- Debian/Ubuntu: `sudo apt install python3-pyside6.qtwidgets python3-pyside6.qtsvgwidgets`
 
-Other distros: install PySide6 (`python3-pyside6` on Fedora, `python3-pyside6.qtwidgets python3-pyside6.qtsvgwidgets` on Debian/Ubuntu), then run `./install-desktop.sh`.
+Then add Kauz to your app menu:
+```bash
+./install-desktop.sh
+```
 
 **Terminal only** (nothing to install):
 ```bash
 python3 -m kauz
 ```
 
-Optional, to get the `kauz` and `kauz-gui` commands everywhere: `pipx install --system-site-packages .`
+Optional, to get the `kauz` and `kauz-gui` commands everywhere:
+```bash
+pipx install --system-site-packages .
+```
 
-## Desktop app
+---
 
-Click **Scan now**.
+## 🖥️ Desktop app
+
+Open **Kauz** from your app menu and click **Scan now**.
 
 - The owl shows at a glance how your system is doing
 - Every finding expands: **What does it mean?** and **What to do**
 - Fix commands can be copied with one click
 - **With admin rights** runs the scan through `pkexec` – KDE asks for your password once
-- **Save report** creates the HTML report and opens it in your browser
+- **Save report** creates an HTML report and opens it in your browser
 
-## Terminal
+## ⌨️ Terminal
 
 ```bash
-python3 -m kauz                     # normal scan
-sudo python3 -m kauz                # full scan (all processes, sudo rules, firewall rules)
-python3 -m kauz -v                  # all details and explanations
-python3 -m kauz --html report.html  # HTML report for the browser
-python3 -m kauz --only network,ssh  # only some checks
-python3 -m kauz --list              # list all checks
-python3 -m kauz --json -            # JSON only (for scripts)
+kauz                     # normal scan
+sudo kauz                # full scan (all processes, sudo rules, firewall rules)
+kauz -v                  # all details and explanations
+kauz --html report.html  # HTML report for the browser
+kauz --only network,ssh  # only some checks
+kauz --list              # list all checks
+kauz --json -            # JSON only (for scripts)
 ```
 
-Exit code: `0` = fine, `1` = warnings, `2` = critical – handy for cron jobs.
+Not installed as a package? Use `python3 -m kauz` instead of `kauz`.
 
-## What gets checked?
+**Exit codes:** `0` = fine, `1` = warnings, `2` = critical – handy for cron jobs.
+
+---
+
+## 🔍 What gets checked?
 
 | Check | Question | Where does the data come from? |
 |---|---|---|
@@ -75,7 +111,14 @@ Exit code: `0` = fine, `1` = warnings, `2` = critical – handy for cron jobs.
 | `permissions` | SUID files in temp/home, unprotected SSH keys? | file system |
 | `system` | ASLR, kernel hardening, Secure Boot, disk encryption | `/proc/sys`, EFI variables, `lsblk` |
 
-## How does it work?
+Every finding has a severity: **OK**, **Info**, **Warning** or **Critical**.
+Warnings cost 7 points, critical findings 20. The owl's face shows how your system is doing.
+
+📄 [See an example report](docs/example-report.html) (download it and open it in your browser)
+
+---
+
+## ⚙️ How does it work?
 
 Linux exposes almost everything as a **file**. `/proc` is a live view of the kernel: every process,
 every network socket, every kernel setting. Kauz reads those files directly instead of calling tools like
@@ -86,10 +129,7 @@ Example – open ports:
    → address `0.0.0.0`, port `0x18EB = 6379`, state `0A = LISTEN`, inode `12345`
 2. An entry in `/proc/<pid>/fd/` points to `socket:[12345]` → now we know which program it is.
 
-Every finding has a severity (OK, Info, Warning, Critical). Warnings cost 7 points, critical findings 20.
-The owl's face shows how your system is doing.
-
-## Project layout
+## 🗂️ Project layout
 
 ```
 kauz/
@@ -102,20 +142,30 @@ kauz/
 └── checks/         one file per check – each has ID, TITLE and run()
 ```
 
-**Writing a new check:** create a file in `checks/`, define `ID`, `TITLE` and `run()` (returns a list of
-`Finding`), add it to `checks/__init__.py`. Done.
+---
 
-## Roadmap
+## 🤝 Contributing
+
+Ideas, bug reports and pull requests are welcome!
+
+**Writing a new check:** create a file in `kauz/checks/`, define `ID`, `TITLE` and `run()`
+(returns a list of `Finding`), add it to `kauz/checks/__init__.py`. Done.
+
+## 🗺️ Roadmap
 
 - [x] Desktop app (Qt for KDE)
+- [x] Arch package (PKGBUILD)
+- [ ] AUR package
 - [ ] One-click fixes (only after confirmation)
 - [ ] Regular scans via systemd timer + desktop notification
 - [ ] Compare with the last scan ("what changed?")
 - [ ] Known vulnerabilities in installed packages (arch-audit / CVE databases)
-- [ ] AUR package
 
-[See an example report](docs/example-report.html) (download it and open it in your browser)
+## ☕ Support
 
-## License
+Kauz is and stays free and open source. If it helped you and you want to buy me a coffee,
+you'll find my donation addresses on [my profile](https://github.com/nox994).
+
+## 📜 License
 
 MIT – see [LICENSE](LICENSE). Provided "as is", without any warranty.
